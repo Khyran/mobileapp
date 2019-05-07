@@ -176,13 +176,9 @@ namespace Toggl.Core.UI.ViewModels
         }
 
         public void Reload()
-        {
+        { 
             reloadSubject.OnNext(Unit.Default);
         }
-
-        public void OnToggleCalendar() => selectStartOfSelectionIfNeeded();
-
-        public void OnHideCalendar() => selectStartOfSelectionIfNeeded();
 
         public void SelectPeriod(ReportPeriod period)
         {
@@ -245,7 +241,7 @@ namespace Toggl.Core.UI.ViewModels
         private string dayHeaderFor(int index, BeginningOfWeek newBeginningOfWeek)
             => dayHeaders[(index + (int)newBeginningOfWeek + 7) % 7];
 
-        private void selectStartOfSelectionIfNeeded()
+        public void SelectStartOfSelectionIfNeeded()
         {
             if (startOfSelection == null) return;
 
