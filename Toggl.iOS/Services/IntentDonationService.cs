@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
+using System.Reactive.Subjects;
 using Foundation;
 using Intents;
 using Toggl.Core;
 using Toggl.Core.Analytics;
-using Toggl.Core.DataSources;
+using Toggl.Core.Models;
 using Toggl.Core.Models.Interfaces;
 using Toggl.Shared.Models;
-using Toggl.Core.Services;
 using Toggl.iOS.Intents;
+using Toggl.iOS.Models;
 using UIKit;
 
 namespace Toggl.iOS.Services
@@ -25,9 +27,36 @@ namespace Toggl.iOS.Services
             new INDailyRoutineRelevanceProvider(INDailyRoutineSituation.Gym),
             new INDailyRoutineRelevanceProvider(INDailyRoutineSituation.School)
         };
+
+        private ISubject<Unit> trigger;
+
+        public IObservable<IEnumerable<SiriShortcut>> CurrentShortcuts { get; }
+
         public IntentDonationService(IAnalyticsService analyticsService)
         {
             this.analyticsService = analyticsService;
+
+            trigger = new Subject<Unit>();
+
+            CurrentShortcuts = trigger
+                .StartWith(Unit.Default)
+                .SelectMany(_ => currentShortcuts());
+        }
+
+        private IObservable<IEnumerable<SiriShortcut>> currentShortcuts()
+        {
+            return Observable.Create<IEnumerable<SiriShortcut>>(observer =>
+                {
+                    INVoiceShortcutCenter.SharedCenter.GetAllVoiceShortcuts((shortcuts, error) =>
+                    {
+                        var siriShortcuts = shortcuts
+                            .Select(shortcut => new SiriShortcut(shortcut));
+
+                        observer.OnNext(siriShortcuts);
+                    });
+
+                    return new CompositeDisposable { };
+                });
         }
 
         public void SetDefaultShortcutSuggestions(IWorkspace workspace)
@@ -182,6 +211,35 @@ namespace Toggl.iOS.Services
             INInteraction.DeleteAllInteractions(_ => { });
             INVoiceShortcutCenter.SharedCenter.SetShortcutSuggestions(new INShortcut[0]);
             INRelevantShortcutStore.DefaultStore.SetRelevantShortcuts(new INRelevantShortcut[0], trackError);
+        }
+
+        private Dictionary<SiriShortcutType, INIntent> generateDefaultIntents(IWorkspace workspace)
+        {
+            var dictionary = new Dictionary<SiriShortcutType, INIntent>();
+
+            var startTimerIntent = new StartTimerIntent();
+            startTimerIntent.Workspace = new INObject(workspace.Id.ToString(), workspace.Name);
+            startTimerIntent.SuggestedInvocationPhrase = Resources.StartTimerInvocationPhrase;
+            dictionary[SiriShortcutType.Start] = startTimerIntent;
+
+            var startTimerWithClipboardIntent = new StartTimerFromClipboardIntent();
+            startTimerWithClipboardIntent.Workspace = new INObject(workspace.Id.ToString(), workspace.Name);
+            dictionary[SiriShortcutType.StartFromClipboard] = startTimerWithClipboardIntent;
+
+            var stopTimerIntent = new StopTimerIntent();
+            stopTimerIntent.SuggestedInvocationPhrase = Resources.StopTimerInvocationPhrase;
+            dictionary[SiriShortcutType.Stop] = stopTimerIntent;
+
+            var showReportIntent = new ShowReportIntent();
+            showReportIntent.SuggestedInvocationPhrase = Resources.ShowReportsInvocationPhrase;
+            dictionary[SiriShortcutType.ShowReport] = showReportIntent;
+
+            var continueTimerIntent = new ContinueTimerIntent();
+            continueTimerIntent.SuggestedInvocationPhrase = Resources.ContinueTimerInvocationPhrase;
+            continueTimerIntent.Workspace = new INObject(workspace.Id.ToString(), workspace.Name);
+            dictionary[SiriShortcutType.Continue] = continueTimerIntent;
+
+            return dictionary;
         }
 
         private void setupDefaultShortcuts(IWorkspace workspace)
