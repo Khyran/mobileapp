@@ -18,6 +18,12 @@ namespace Toggl.Core.UI.ViewModels
             CloseCompletionSource.SetResult(output);
         }
 
+        public async Task Cancel()
+        {
+            await View.Close();
+            CloseCompletionSource.SetCanceled();
+        }
+
         public void AttachView(IView viewToAttach)
         {
             View = viewToAttach;
@@ -46,6 +52,10 @@ namespace Toggl.Core.UI.ViewModels
 
         public virtual void ViewDestroyed()
         {
+            if (typeof(TOutput) == typeof(Unit))
+            {
+                Cancel();
+            }
         }
     }
 

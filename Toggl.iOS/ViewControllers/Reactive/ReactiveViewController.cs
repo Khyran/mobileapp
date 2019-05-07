@@ -51,6 +51,16 @@ namespace Toggl.iOS.ViewControllers
             ViewModel?.ViewDisappeared();
         }
 
+        public override void DidMoveToParentViewController(UIViewController parent)
+        {
+            base.DidMoveToParentViewController(parent);
+
+            if (parent == null)
+            {
+                ViewModel?.ViewDestroyed();
+            }
+        }
+
         public Task Close()
         {
             this.Dismiss();
