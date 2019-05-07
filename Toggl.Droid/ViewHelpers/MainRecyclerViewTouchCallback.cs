@@ -99,7 +99,7 @@ namespace Toggl.Droid.ViewHelpers
 
         public override float GetSwipeVelocityThreshold(float defaultValue)
         {
-            return defaultValue * 0.4f;
+            return defaultValue * 0.1f;
         }
 
         public override float GetSwipeEscapeVelocity(float defaultValue)
@@ -109,7 +109,7 @@ namespace Toggl.Droid.ViewHelpers
 
         public override float GetSwipeThreshold(RecyclerView.ViewHolder viewHolder)
         {
-            return 0.9f;
+            return 0.75f;
         }
     }
 }
