@@ -36,5 +36,13 @@ namespace Toggl.iOS.Presentation
 
             return tcs.Task;
         }
+
+        protected UIViewController FindPresentedViewController()
+            => FindPresentedViewController(Window.RootViewController);
+
+        private UIViewController FindPresentedViewController(UIViewController current)
+            => current.PresentedViewController == null || current.PresentedViewController.IsBeingDismissed
+                ? current
+                : FindPresentedViewController(current.PresentedViewController);
     }
 }
