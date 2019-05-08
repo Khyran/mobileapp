@@ -245,6 +245,9 @@ namespace Toggl.Core.Analytics
         [AnalyticsEvent("DateTimeOffset", "TimeSpan")]
         public IAnalyticsEvent<DateTimeOffset, TimeSpan> UnrepresentableDateErrorInWheelView { get; protected set; }
 
+        [AnalyticsEvent("DateTimeOffset", "TimeZoneInfo")]
+        public IAnalyticsEvent<DateTimeOffset, string> UnrepresentableDateErrorWhenConvertingDateToFormattedString { get; protected set; }
+
         public void TrackAnonymized(Exception exception)
         {
             if (exception.IsAnonymized())

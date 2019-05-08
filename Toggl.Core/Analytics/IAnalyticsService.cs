@@ -160,6 +160,8 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent<DateTimeOffset, TimeSpan> UnrepresentableDateErrorInWheelView { get; }
 
+        IAnalyticsEvent<DateTimeOffset, string> UnrepresentableDateErrorWhenConvertingDateToFormattedString { get; }
+
         void Track(string eventName, Dictionary<string, string> parameters = null);
 
         void TrackAnonymized(Exception exception);
