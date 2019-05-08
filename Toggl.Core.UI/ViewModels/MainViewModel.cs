@@ -78,7 +78,6 @@ namespace Toggl.Core.UI.ViewModels
         public IObservable<bool> ShouldShowStoppedTimeEntryNotification { get; private set; }
         public IObservable<IThreadSafeTimeEntry> CurrentRunningTimeEntry { get; private set; }
         public IObservable<bool> ShouldShowRatingView { get; private set; }
-        public IObservable<IThreadSafeWorkspace> DefaultWorkspace { get; private set; }
 
         public IObservable<IEnumerable<MainLogSection>> TimeEntries => TimeEntriesViewModel.TimeEntries
             .Throttle(TimeSpan.FromSeconds(throttlePeriodInSeconds))
@@ -158,11 +157,6 @@ namespace Toggl.Core.UI.ViewModels
             TimeEntriesCount = TimeEntriesViewModel.Count.AsDriver(schedulerProvider);
 
             ratingViewExperiment = new RatingViewExperiment(timeService, dataSource, onboardingStorage, remoteConfigService);
-
-            DefaultWorkspace = interactorFactory.GetDefaultWorkspace()
-                .TrackException<InvalidOperationException, IThreadSafeWorkspace>("MainViewModel.Constructor")
-                .Execute()
-                .AsDriver(schedulerProvider);
         }
 
         public void Init(string action, string description)
