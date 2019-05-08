@@ -17,7 +17,7 @@ namespace Toggl.Core.UI.Transformations
                 timeZoneInfo = TimeZoneInfo.Local;
             }
 
-            return getDateTimeOffsetInCorrectTimeZone(date, timeZoneInfo).ToString(format, CultureInfo.InvariantCulture);
+            return getDateTimeOffsetInCorrectTimeZone(date, timeZoneInfo, analyticsService).ToString(format, CultureInfo.InvariantCulture);
         }
 
         private static DateTimeOffset getDateTimeOffsetInCorrectTimeZone(
