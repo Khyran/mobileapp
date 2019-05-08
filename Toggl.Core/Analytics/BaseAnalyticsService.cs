@@ -242,8 +242,8 @@ namespace Toggl.Core.Analytics
         [AnalyticsEvent("Origin")]
         public IAnalyticsEvent<EditTimeEntryOrigin> EditViewOpened { get; protected set; }
 
-        [AnalyticsEvent("DateTimeOffset", "TimeSpan", "Location")]
-        public IAnalyticsEvent<DateTimeOffset, TimeSpan, UnrepresentableDateErrorLocation> UnrepresentableDateError { get; protected set; }
+        [AnalyticsEvent("DateTimeOffset", "TimeSpan")]
+        public IAnalyticsEvent<DateTimeOffset, TimeSpan> UnrepresentableDateErrorInWheelView { get; protected set; }
 
         public void TrackAnonymized(Exception exception)
         {

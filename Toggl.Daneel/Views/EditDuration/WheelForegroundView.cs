@@ -369,10 +369,9 @@ namespace Toggl.Daneel.Views.EditDuration
             }
             catch (ArgumentOutOfRangeException)
             {
-                IosDependencyContainer.Instance.AnalyticsService.UnrepresentableDateError.Track(
+                IosDependencyContainer.Instance.AnalyticsService.UnrepresentableDateErrorInWheelView.Track(
                     currentDateTimeOffset,
-                    difference,
-                    UnrepresentableDateErrorLocation.WheelForegroundView
+                    difference
                 );
                 return currentDateTimeOffset;
             }

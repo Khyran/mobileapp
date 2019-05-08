@@ -158,7 +158,7 @@ namespace Toggl.Core.Analytics
 
         IAnalyticsEvent<EditTimeEntryOrigin> EditViewOpened { get; }
 
-        IAnalyticsEvent<DateTimeOffset, TimeSpan, UnrepresentableDateErrorLocation> UnrepresentableDateError { get; }
+        IAnalyticsEvent<DateTimeOffset, TimeSpan> UnrepresentableDateErrorInWheelView { get; }
 
         void Track(string eventName, Dictionary<string, string> parameters = null);
 
