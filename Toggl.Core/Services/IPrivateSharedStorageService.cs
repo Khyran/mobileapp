@@ -10,6 +10,8 @@ namespace Toggl.Core.Services
 
         void SaveLastUpdateDate(DateTimeOffset date);
 
+        void SaveDefaultWorkspaceId(long workspaceId)
+
         void ClearAll();
     }
 }

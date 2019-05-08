@@ -22,6 +22,11 @@ namespace Toggl.iOS.Services
             SharedStorage.instance.SetLastUpdateDate(date);
         }
 
+        public void SaveDefaultWorkspaceId(long workspaceId)
+        {
+            SharedStorage.instance.SetDefaultWorkspaceId(workspaceId);
+        }
+
         public void ClearAll()
         {
             SharedStorage.instance.DeleteEverything();

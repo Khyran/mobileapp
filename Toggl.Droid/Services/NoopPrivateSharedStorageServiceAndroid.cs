@@ -17,6 +17,10 @@ namespace Toggl.Droid.Services
         {
         }
 
+        public void SaveDefaultWorkspaceId(long workspaceId)
+        {
+        }
+
         public void ClearAll()
         {
         }
