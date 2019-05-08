@@ -99,9 +99,9 @@
 	<key>INIntentDefinitionSystemVersion</key>
 	<string>18E226</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>10E1001</string>
+	<string>10E125</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>10.2.1</string>
+	<string>10.2</string>
 	<key>INIntents</key>
 	<array>
 		<dict>
@@ -454,6 +454,21 @@
 			<string>StartTimer</string>
 			<key>INIntentParameterCombinations</key>
 			<dict>
+				<key></key>
+				<dict>
+					<key>INIntentParameterCombinationIsPrimary</key>
+					<false/>
+					<key>INIntentParameterCombinationSubtitle</key>
+					<string>with no parameters</string>
+					<key>INIntentParameterCombinationSubtitleID</key>
+					<string>cAT3Em</string>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+					<key>INIntentParameterCombinationTitle</key>
+					<string>Start timer</string>
+					<key>INIntentParameterCombinationTitleID</key>
+					<string>3JuKf9</string>
+				</dict>
 				<key>billable,entryDescription,workspace</key>
 				<dict>
 					<key>INIntentParameterCombinationIsPrimary</key>
@@ -682,12 +697,12 @@
 			<string>ContinueTimer</string>
 			<key>INIntentParameterCombinations</key>
 			<dict>
-				<key>workspace</key>
+				<key></key>
 				<dict>
 					<key>INIntentParameterCombinationIsPrimary</key>
 					<false/>
 					<key>INIntentParameterCombinationSubtitle</key>
-					<string>in ${workspace}</string>
+					<string>Continue last time entry</string>
 					<key>INIntentParameterCombinationSubtitleID</key>
 					<string>0DhbDI</string>
 					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
@@ -699,20 +714,7 @@
 				</dict>
 			</dict>
 			<key>INIntentParameters</key>
-			<array>
-				<dict>
-					<key>INIntentParameterDisplayPriority</key>
-					<integer>1</integer>
-					<key>INIntentParameterName</key>
-					<string>workspace</string>
-					<key>INIntentParameterSupportsMultipleValues</key>
-					<false/>
-					<key>INIntentParameterTag</key>
-					<integer>2</integer>
-					<key>INIntentParameterType</key>
-					<string>Object</string>
-				</dict>
-			</array>
+			<array/>
 			<key>INIntentResponse</key>
 			<dict>
 				<key>INIntentResponseCodes</key>
@@ -802,6 +804,21 @@
 			<string>StartTimerFromClipboard</string>
 			<key>INIntentParameterCombinations</key>
 			<dict>
+				<key></key>
+				<dict>
+					<key>INIntentParameterCombinationIsPrimary</key>
+					<false/>
+					<key>INIntentParameterCombinationSubtitle</key>
+					<string>with no parameters</string>
+					<key>INIntentParameterCombinationSubtitleID</key>
+					<string>1L6L4u</string>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+					<key>INIntentParameterCombinationTitle</key>
+					<string>Start timer from clipboard</string>
+					<key>INIntentParameterCombinationTitleID</key>
+					<string>JErccw</string>
+				</dict>
 				<key>projectId,tags,billable,workspace</key>
 				<dict>
 					<key>INIntentParameterCombinationIsPrimary</key>
