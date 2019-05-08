@@ -89,7 +89,7 @@ namespace Toggl.Core.Interactors
 
         IInteractor<IObservable<Unit>> ObserveWorkspacesChanges();
 
-        IInteractor<IObservable<long?>> ObserveDefaultWorkspaceId();
+        IInteractor<IObservable<long>> ObserveDefaultWorkspaceId();
 
         #endregion
 

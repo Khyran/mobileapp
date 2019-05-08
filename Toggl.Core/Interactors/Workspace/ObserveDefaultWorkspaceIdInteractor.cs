@@ -1,15 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Reactive;
 using System.Reactive.Linq;
 using Toggl.Core.DataSources;
-using Toggl.Core.Extensions;
-using Toggl.Core.Models.Interfaces;
 using Toggl.Shared;
+using System.Linq;
+using Toggl.Shared.Extensions;
 
 namespace Toggl.Core.Interactors
 {
-    public class ObserveDefaultWorkspaceIdInteractor : IInteractor<IObservable<long?>>
+    public class ObserveDefaultWorkspaceIdInteractor : IInteractor<IObservable<long>>
     {
         private readonly ITogglDataSource dataSource;
 
@@ -20,9 +18,20 @@ namespace Toggl.Core.Interactors
             this.dataSource = dataSource;
         }
 
-        public IObservable<long?> Execute()
+        public IObservable<long> Execute()
             => dataSource.User.Current
-                .Select(user => user.DefaultWorkspaceId)
+                .SelectMany(user => user.DefaultWorkspaceId.HasValue
+                    ? Observable.Return(user.DefaultWorkspaceId.Value)
+                    : chooseWorkspace())
+                .Where(workspaceId => workspaceId != null)
                 .DistinctUntilChanged();
+
+        private IObservable<long> chooseWorkspace()
+            => dataSource.Workspaces.GetAll(workspace => !workspace.IsDeleted)
+                .Select(workspaces => workspaces.OrderBy(workspace => workspace.Id))
+                .SelectMany(workspaces =>
+                    workspaces.None()
+                        ? Observable.Never<long>()
+                        : Observable.Return(workspaces.First().Id));
     }
 }
