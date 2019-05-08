@@ -53,9 +53,7 @@ namespace SiriExtension
 
         public override void HandleStartTimer(StartTimerIntent intent, Action<StartTimerIntentResponse> completion)
         {
-            var workspaceId = (long)Convert.ToDouble(intent.Workspace.Identifier);
-
-            var timeEntry = createTimeEntry(workspaceId, intent);
+            var timeEntry = createTimeEntry(intent);
             togglAPI.TimeEntries.Create(timeEntry).Subscribe(te =>
             {
                 SharedStorage.instance.SetNeedsSync(true);
@@ -72,8 +70,10 @@ namespace SiriExtension
             });
         }
 
-        private TimeEntry createTimeEntry(long workspaceId, StartTimerIntent intent)
+        private TimeEntry createTimeEntry(StartTimerIntent intent)
         {
+            var workspaceId = intent.Workspace == null ? SharedStorage.instance.GetDefaultWorkspaceId() : (long)Convert.ToDouble(intent.Workspace.Identifier);                                                            
+
             if (string.IsNullOrEmpty(intent.EntryDescription))
             {
                 return new TimeEntry(workspaceId, null, null, false, DateTimeOffset.Now, null, "", new long[0], (long)SharedStorage.instance.GetUserId(), 0, null, DateTimeOffset.Now);

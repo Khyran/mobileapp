@@ -58,9 +58,8 @@ namespace SiriExtension
 
         public override void HandleStartTimerFromClipboard(StartTimerFromClipboardIntent intent, Action<StartTimerFromClipboardIntentResponse> completion)
         {
-            var workspaceId = (long)Convert.ToDouble(intent.Workspace.Identifier);
             var userActivity = new NSUserActivity(activityType);
-            var timeEntry = createTimeEntry(workspaceId, intent);
+            var timeEntry = createTimeEntry(intent);
             togglAPI.TimeEntries.Create(timeEntry).Subscribe(te =>
             {
                 SharedStorage.instance.SetNeedsSync(true);
@@ -76,8 +75,10 @@ namespace SiriExtension
             });
         }
 
-        private TimeEntry createTimeEntry(long workspaceId, StartTimerFromClipboardIntent intent)
+        private TimeEntry createTimeEntry(StartTimerFromClipboardIntent intent)
         {
+            var workspaceId = intent.Workspace == null ? SharedStorage.instance.GetDefaultWorkspaceId() : (long)Convert.ToDouble(intent.Workspace.Identifier);
+
             return new TimeEntry(
                 workspaceId,
                 stringToLong(intent.ProjectId?.Identifier),
