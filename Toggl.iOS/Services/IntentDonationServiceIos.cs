@@ -30,14 +30,14 @@ namespace Toggl.iOS.Services
             this.analyticsService = analyticsService;
         }
 
-        public void SetDefaultShortcutSuggestions(IWorkspace workspace)
+        public void SetDefaultShortcutSuggestions()
         {
             if (!UIDevice.CurrentDevice.CheckSystemVersion(12, 0))
             {
                 return;
             }
 
-            setupDefaultShortcuts(workspace);
+            setupDefaultShortcuts();
         }
 
         public void DonateStartTimeEntry(IThreadSafeTimeEntry timeEntry)
@@ -184,17 +184,15 @@ namespace Toggl.iOS.Services
             INRelevantShortcutStore.DefaultStore.SetRelevantShortcuts(new INRelevantShortcut[0], trackError);
         }
 
-        private void setupDefaultShortcuts(IWorkspace workspace)
+        private void setupDefaultShortcuts()
         {
             var startTimerIntent = new StartTimerIntent();
-            startTimerIntent.Workspace = new INObject(workspace.Id.ToString(), workspace.Name);
             startTimerIntent.SuggestedInvocationPhrase = Resources.StartTimerInvocationPhrase;
             var startShortcut = new INShortcut(startTimerIntent);
             var startRelevantShorcut = new INRelevantShortcut(startShortcut);
             startRelevantShorcut.RelevanceProviders = startTimerRelevanceProviders;
 
             var startTimerWithClipboardIntent = new StartTimerFromClipboardIntent();
-            startTimerWithClipboardIntent.Workspace = new INObject(workspace.Id.ToString(), workspace.Name);
             var startTimerWithClipboardShortcut = new INShortcut(startTimerWithClipboardIntent);
             var startTimerWithClipboardRelevantShorcut = new INRelevantShortcut(startTimerWithClipboardShortcut);
             startTimerWithClipboardRelevantShorcut.RelevanceProviders = startTimerRelevanceProviders;
@@ -216,7 +214,6 @@ namespace Toggl.iOS.Services
             {
                 SuggestedInvocationPhrase = Resources.ContinueTimerInvocationPhrase
             };
-            continueTimerIntent.Workspace = new INObject(workspace.Id.ToString(), workspace.Name);
             var continueTimerShortcut = new INShortcut(continueTimerIntent);
             var continueTimerRelevantShortcut = new INRelevantShortcut(continueTimerShortcut)
             {

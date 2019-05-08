@@ -19,7 +19,7 @@ namespace Toggl.Core.Services
 
     public interface IIntentDonationService
     {
-        void SetDefaultShortcutSuggestions(IWorkspace workspace);
+        void SetDefaultShortcutSuggestions();
         void DonateStartTimeEntry(IThreadSafeTimeEntry timeEntry);
         void DonateStopCurrentTimeEntry();
         void DonateShowReport(ReportPeriod period);
